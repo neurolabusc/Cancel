@@ -15,5 +15,5 @@ It is typically easier to get the compiled versions (in the "Compiled" folder) f
 
 This is a screenshot of the program in action.
 
-![alt tag](https://raw.githubusercontent.com/neurolabusc/cancel/master/screenshot.jpg)
+![alt tag](https://raw.githubusercontent.com/neurolabusc/Cancel/master/screenshot.jpg)
 # Cancel
