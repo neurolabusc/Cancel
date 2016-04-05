@@ -1,0 +1,5 @@
+cd /Users/rorden/documents/cancel/cancel
+lazbuild cancel.lpr
+mv cancel ../intel
+rm *.o
+rm *.ppu

@@ -1,0 +1,220 @@
+object Form1: TForm1
+  Left = 514
+  Height = 476
+  Top = 126
+  Width = 626
+  Caption = 'Form1'
+  ClientHeight = 476
+  ClientWidth = 626
+  Menu = MainMenu1
+  OnClose = FormClose
+  OnCreate = FormCreate
+  OnResize = FormResize
+  Position = poScreenCenter
+  LCLVersion = '1.0.2.0'
+  WindowState = wsMaximized
+  object Memo1: TMemo
+    Left = 0
+    Height = 450
+    Top = 0
+    Width = 626
+    Align = alClient
+    Lines.Strings = (
+      'Memo1'
+    )
+    TabOrder = 0
+  end
+  object Panel1: TPanel
+    Left = 0
+    Height = 450
+    Top = 0
+    Width = 626
+    Align = alClient
+    ClientHeight = 450
+    ClientWidth = 626
+    TabOrder = 1
+    object Image1: TImage
+      Left = 1
+      Height = 448
+      Top = 1
+      Width = 624
+      Align = alClient
+      AutoSize = True
+      OnMouseDown = Image1MouseDown
+      OnMouseMove = Image1MouseMove
+      Stretch = True
+    end
+    object DefectCheck: TCheckBox
+      Left = 8
+      Height = 18
+      Top = 8
+      Width = 137
+      Caption = 'Mark Defects Task'
+      OnChange = DefectCheckChange
+      TabOrder = 0
+    end
+  end
+  object ToolBar1: TToolBar
+    Left = 0
+    Height = 26
+    Top = 450
+    Width = 626
+    Align = alBottom
+    Caption = 'ToolBar1'
+    TabOrder = 2
+    object CommentEdit: TEdit
+      Left = 1
+      Height = 24
+      Top = 2
+      Width = 625
+      Align = alClient
+      TabOrder = 0
+    end
+  end
+  object MainMenu1: TMainMenu
+    left = 35
+    top = 56
+    object File1: TMenuItem
+      Caption = 'File'
+      object Statistics1: TMenuItem
+        Caption = 'Statistics'
+        OnClick = Statistics1Click
+      end
+      object Opendata1: TMenuItem
+        Caption = 'Open'
+        OnClick = Opendata1Click
+      end
+      object Savedata1: TMenuItem
+        Caption = 'Save'
+        OnClick = Savedata1Click
+      end
+      object Exit1: TMenuItem
+        Caption = 'Exit'
+        OnClick = Exit1Click
+      end
+    end
+    object Edit1: TMenuItem
+      Caption = 'Edit'
+      object Copy1: TMenuItem
+        Caption = 'Copy statistics to clipboard'
+        OnClick = CopyStats1Click
+      end
+      object Checkall1: TMenuItem
+        Caption = 'Check all'
+        ShortCut = 16449
+        OnClick = Checkall1Click
+      end
+      object Uncheckall1: TMenuItem
+        Caption = 'Uncheck all'
+        ShortCut = 16469
+        OnClick = Uncheckall1Click
+      end
+      object Reversechecks1: TMenuItem
+        Caption = 'Reverse checks'
+        OnClick = Reversechecks1Click
+      end
+      object Boxsize1: TMenuItem
+        Caption = 'Box size...'
+        OnClick = Boxsize1Click
+      end
+      object Showcaptions1: TMenuItem
+        AutoCheck = True
+        Caption = 'Show captions'
+        OnClick = Showcaptions1Click
+      end
+      object Showimage1: TMenuItem
+        AutoCheck = True
+        Caption = 'Show image'
+        Visible = False
+        OnClick = Showimage1Click
+      end
+      object ShowComment1: TMenuItem
+        AutoCheck = True
+        Caption = 'Show comment'
+        GroupIndex = 124
+        OnClick = Showcomment1Click
+      end
+    end
+    object View1: TMenuItem
+      Caption = 'Advanced'
+      object NewTest1: TMenuItem
+        Caption = 'New test...'
+        OnClick = Newtest1Click
+      end
+      object EditPositions1: TMenuItem
+        AutoCheck = True
+        Caption = 'Edit positions'
+        OnClick = EditPositions1Click
+      end
+      object CheckedColor1: TMenuItem
+        Caption = 'Checked color'
+        OnClick = CheckedColor1Click
+      end
+      object UncheckedColor1: TMenuItem
+        Caption = 'Unchecked color'
+        OnClick = UncheckedColor1Click
+      end
+    end
+    object Help1: TMenuItem
+      Caption = 'Help'
+      object About1: TMenuItem
+        Caption = 'About'
+        OnClick = About1Click
+      end
+    end
+  end
+  object OpenDialog1: TOpenDialog
+    DefaultExt = '.*.ini'
+    Filter = 'Ini file|*.ini'
+    left = 24
+    top = 120
+  end
+  object BmpOpenDialog: TOpenDialog
+    Title = 'Open image'
+    FileName = '*.jpg'
+    Filter = 'Bitmaps|*.jpg; *.jpeg; *.png; *.bmp'
+    left = 136
+    top = 72
+  end
+  object SaveDialog1: TSaveDialog
+    DefaultExt = '.ini'
+    Filter = 'Ini file|*.ini'
+    Options = [ofOverwritePrompt, ofEnableSizing, ofViewDetail]
+    left = 304
+    top = 96
+  end
+  object RestoreTimer: TTimer
+    Enabled = False
+    Interval = 10
+    OnTimer = RestoreTimerTimer
+    left = 24
+    top = 272
+  end
+  object ColorDialog1: TColorDialog
+    Color = clBlack
+    CustomColors.Strings = (
+      'ColorA=000000'
+      'ColorB=000080'
+      'ColorC=008000'
+      'ColorD=008080'
+      'ColorE=800000'
+      'ColorF=800080'
+      'ColorG=808000'
+      'ColorH=808080'
+      'ColorI=C0C0C0'
+      'ColorJ=0000FF'
+      'ColorK=00FF00'
+      'ColorL=00FFFF'
+      'ColorM=FF0000'
+      'ColorN=FF00FF'
+      'ColorO=FFFF00'
+      'ColorP=FFFFFF'
+      'ColorQ=C0DCC0'
+      'ColorR=F0CAA6'
+      'ColorS=F0FBFF'
+      'ColorT=A4A0A0'
+    )
+    left = 328
+    top = 24
+  end
+end

@@ -1,0 +1,63 @@
+{ This is an automatically generated lazarus resource file }
+
+LazarusResources.Add('TForm1','FORMDATA',[
+  'TPF0'#6'TForm1'#5'Form1'#4'Left'#3#2#2#6'Height'#3#220#1#3'Top'#2'~'#5'Width'
+  +#3'r'#2#7'Caption'#6#5'Form1'#12'ClientHeight'#3#220#1#11'ClientWidth'#3'r'#2
+  +#4'Menu'#7#9'MainMenu1'#7'OnClose'#7#9'FormClose'#8'OnCreate'#7#10'FormCreat'
+  +'e'#8'OnResize'#7#10'FormResize'#8'Position'#7#14'poScreenCenter'#10'LCLVers'
+  +'ion'#6#7'1.0.2.0'#11'WindowState'#7#11'wsMaximized'#0#5'TMemo'#5'Memo1'#4'L'
+  +'eft'#2#0#6'Height'#3#194#1#3'Top'#2#0#5'Width'#3'r'#2#5'Align'#7#8'alClient'
+  +#13'Lines.Strings'#1#6#5'Memo1'#0#8'TabOrder'#2#0#0#0#6'TPanel'#6'Panel1'#4
+  +'Left'#2#0#6'Height'#3#194#1#3'Top'#2#0#5'Width'#3'r'#2#5'Align'#7#8'alClien'
+  +'t'#12'ClientHeight'#3#194#1#11'ClientWidth'#3'r'#2#8'TabOrder'#2#1#0#6'TIma'
+  +'ge'#6'Image1'#4'Left'#2#1#6'Height'#3#192#1#3'Top'#2#1#5'Width'#3'p'#2#5'Al'
+  +'ign'#7#8'alClient'#8'AutoSize'#9#11'OnMouseDown'#7#15'Image1MouseDown'#11'O'
+  +'nMouseMove'#7#15'Image1MouseMove'#7'Stretch'#9#0#0#9'TCheckBox'#11'DefectCh'
+  +'eck'#4'Left'#2#8#6'Height'#2#18#3'Top'#2#8#5'Width'#3#137#0#7'Caption'#6#17
+  +'Mark Defects Task'#8'OnChange'#7#17'DefectCheckChange'#8'TabOrder'#2#0#0#0#0
+  +#8'TToolBar'#8'ToolBar1'#4'Left'#2#0#6'Height'#2#26#3'Top'#3#194#1#5'Width'#3
+  +'r'#2#5'Align'#7#8'alBottom'#7'Caption'#6#8'ToolBar1'#8'TabOrder'#2#2#0#5'TE'
+  +'dit'#11'CommentEdit'#4'Left'#2#1#6'Height'#2#24#3'Top'#2#2#5'Width'#3'q'#2#5
+  +'Align'#7#8'alClient'#8'TabOrder'#2#0#0#0#0#9'TMainMenu'#9'MainMenu1'#4'left'
+  +#2'#'#3'top'#2'8'#0#9'TMenuItem'#5'File1'#7'Caption'#6#4'File'#0#9'TMenuItem'
+  +#11'Statistics1'#7'Caption'#6#10'Statistics'#7'OnClick'#7#16'Statistics1Clic'
+  +'k'#0#0#9'TMenuItem'#9'Opendata1'#7'Caption'#6#4'Open'#7'OnClick'#7#14'Opend'
+  +'ata1Click'#0#0#9'TMenuItem'#9'Savedata1'#7'Caption'#6#4'Save'#7'OnClick'#7
+  +#14'Savedata1Click'#0#0#9'TMenuItem'#5'Exit1'#7'Caption'#6#4'Exit'#7'OnClick'
+  +#7#10'Exit1Click'#0#0#0#9'TMenuItem'#5'Edit1'#7'Caption'#6#4'Edit'#0#9'TMenu'
+  +'Item'#5'Copy1'#7'Caption'#6#28'Copy statistics to clipboard'#7'OnClick'#7#15
+  +'CopyStats1Click'#0#0#9'TMenuItem'#9'Checkall1'#7'Caption'#6#9'Check all'#8
+  +'ShortCut'#3'A@'#7'OnClick'#7#14'Checkall1Click'#0#0#9'TMenuItem'#11'Uncheck'
+  +'all1'#7'Caption'#6#11'Uncheck all'#8'ShortCut'#3'U@'#7'OnClick'#7#16'Unchec'
+  +'kall1Click'#0#0#9'TMenuItem'#14'Reversechecks1'#7'Caption'#6#14'Reverse che'
+  +'cks'#7'OnClick'#7#19'Reversechecks1Click'#0#0#9'TMenuItem'#8'Boxsize1'#7'Ca'
+  +'ption'#6#11'Box size...'#7'OnClick'#7#13'Boxsize1Click'#0#0#9'TMenuItem'#13
+  +'Showcaptions1'#9'AutoCheck'#9#7'Caption'#6#13'Show captions'#7'OnClick'#7#18
+  +'Showcaptions1Click'#0#0#9'TMenuItem'#10'Showimage1'#9'AutoCheck'#9#7'Captio'
+  +'n'#6#10'Show image'#7'Visible'#8#7'OnClick'#7#15'Showimage1Click'#0#0#9'TMe'
+  +'nuItem'#12'ShowComment1'#9'AutoCheck'#9#7'Caption'#6#12'Show comment'#10'Gr'
+  +'oupIndex'#2'|'#7'OnClick'#7#17'Showcomment1Click'#0#0#0#9'TMenuItem'#5'View'
+  +'1'#7'Caption'#6#8'Advanced'#0#9'TMenuItem'#8'NewTest1'#7'Caption'#6#11'New '
+  +'test...'#7'OnClick'#7#13'Newtest1Click'#0#0#9'TMenuItem'#14'EditPositions1'
+  +#9'AutoCheck'#9#7'Caption'#6#14'Edit positions'#7'OnClick'#7#19'EditPosition'
+  +'s1Click'#0#0#9'TMenuItem'#13'CheckedColor1'#7'Caption'#6#13'Checked color'#7
+  +'OnClick'#7#18'CheckedColor1Click'#0#0#9'TMenuItem'#15'UncheckedColor1'#7'Ca'
+  +'ption'#6#15'Unchecked color'#7'OnClick'#7#20'UncheckedColor1Click'#0#0#0#9
+  +'TMenuItem'#5'Help1'#7'Caption'#6#4'Help'#0#9'TMenuItem'#6'About1'#7'Caption'
+  +#6#5'About'#7'OnClick'#7#11'About1Click'#0#0#0#0#11'TOpenDialog'#11'OpenDial'
+  +'og1'#10'DefaultExt'#6#6'.*.ini'#6'Filter'#6#14'Ini file|*.ini'#4'left'#2#24
+  +#3'top'#2'x'#0#0#11'TOpenDialog'#13'BmpOpenDialog'#5'Title'#6#10'Open image'
+  +#8'FileName'#6#5'*.jpg'#6'Filter'#6'#Bitmaps|*.jpg; *.jpeg; *.png; *.bmp'#4
+  +'left'#3#136#0#3'top'#2'H'#0#0#11'TSaveDialog'#11'SaveDialog1'#10'DefaultExt'
+  +#6#4'.ini'#6'Filter'#6#14'Ini file|*.ini'#7'Options'#11#17'ofOverwritePrompt'
+  +#14'ofEnableSizing'#12'ofViewDetail'#0#4'left'#3'0'#1#3'top'#2'`'#0#0#6'TTim'
+  +'er'#12'RestoreTimer'#7'Enabled'#8#8'Interval'#2#10#7'OnTimer'#7#17'RestoreT'
+  +'imerTimer'#4'left'#2#24#3'top'#3#16#1#0#0#12'TColorDialog'#12'ColorDialog1'
+  +#5'Color'#7#7'clBlack'#20'CustomColors.Strings'#1#6#13'ColorA=000000'#6#13'C'
+  +'olorB=000080'#6#13'ColorC=008000'#6#13'ColorD=008080'#6#13'ColorE=800000'#6
+  +#13'ColorF=800080'#6#13'ColorG=808000'#6#13'ColorH=808080'#6#13'ColorI=C0C0C'
+  +'0'#6#13'ColorJ=0000FF'#6#13'ColorK=00FF00'#6#13'ColorL=00FFFF'#6#13'ColorM='
+  +'FF0000'#6#13'ColorN=FF00FF'#6#13'ColorO=FFFF00'#6#13'ColorP=FFFFFF'#6#13'Co'
+  +'lorQ=C0DCC0'#6#13'ColorR=F0CAA6'#6#13'ColorS=F0FBFF'#6#13'ColorT=A4A0A0'#0#4
+  +'left'#3'H'#1#3'top'#2#24#0#0#0
+]);
