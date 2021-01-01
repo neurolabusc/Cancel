@@ -13,13 +13,13 @@ const
 
 function StatString (var lPrefs: TPRefs; lTextLabels: boolean; var lCalibratedMean: double): string;
 function BoundInt (lV,lMin,lMax: integer): integer;
-function AppDir: string; //e.g. c:\folder\ for c:\folder\myapp.exe, but /folder/ for /folder/myapp.app/app
+function AppDirVisible (lDefault: string): string; //e.g. c:\folder\ for c:\folder\myapp.exe, but /folder/ for /folder/myapp.app/app
 function FilenameParts (lInName: string; var lPath,lName,lExt: string): boolean;
 function AppIniFilename: string;
 function IncludesMultiModes (var lPrefs: TPRefs): boolean;
 function StartupIniName: string;
 function RealToStr(lR: double ; lDec: integer): string;
-
+function  peseverateString(var lPrefs: TPrefs): string;
 procedure ClearStats4A (var lA: TStats4A);
 procedure AddStats4A (var lPrefs: TPRefs; var lA: TStats4A);
 function Compute4A (var lA: TStats4A): string;
@@ -135,7 +135,7 @@ begin
 end;
 
 {$IFDEF Darwin}
-function AppDir: string; //e.g. c:\folder\ for c:\folder\myapp.exe, but /folder/myapp.app/ for /folder/myapp.app/app
+(*function AppDir: string; //e.g. c:\folder\ for c:\folder\myapp.exe, but /folder/myapp.app/ for /folder/myapp.app/app
 var
    lInName,lPath,lName,lExt: string;
 begin
@@ -150,9 +150,70 @@ begin
     result := lPath;//+lName+lExt+pathdelim;
     //showmessage(lPath);
  end;
+end; //AppDir*)
+
+function FileNameNoExt (lFilewExt:String): string;
+//remove final extension
+var
+   lLen,lInc: integer;
+   lName: String;
+begin
+	lName := '';
+     lLen := length(lFilewExt);
+	lInc := lLen+1;
+	 if  lLen > 0 then begin
+	   repeat
+                 dec(lInc);
+           until (lFileWExt[lInc] = '.') or (lInc = 1);
+	 end;
+     if lInc > 1 then
+        for lLen := 1 to (lInc - 1) do
+            lName := lName + lFileWExt[lLen]
+     else
+         lName := lFilewExt; //no extension
+     Result := lName;
+end;
+
+function DefaultsDir (lSubFolder: string): string;
+//for Linux: DefaultsDir is ~/appname/SubFolder/, e.g. /home/username/mricron/subfolder/
+//Note: Final character is pathdelim
+const
+     pathdelim = '/';
+var
+   lBaseDir: string;
+begin
+     lBaseDir := GetEnvironmentVariable ('HOME')+pathdelim+'.'+ FileNameNoExt(ExtractFilename(paramstr(0) ) );
+     if not DirectoryExists(lBaseDir) then begin
+        {$I-}
+        MkDir(lBaseDir);
+        if IOResult <> 0 then begin
+               //Msg('Unable to create new folder '+lBaseDir);
+        end;
+        {$I+}
+     end;
+     result := lBaseDir+pathdelim;
+end;
+
+function AppDirVisible (lDefault: string): string;
+begin
+ if (length(lDefault) > 0) and DirectoryExists(lDefault) then
+    result := lDefault
+ else
+     result := extractfilepath(paramstr(0));
+end; //AppDir
+
+function AppDirHidden: string; //e.g. c:\folder\ for c:\folder\myapp.exe, but /folder/myapp.app/ for /folder/myapp.app/app
+begin
+ result := DefaultsDir(extractfilename(paramstr(0)));
+ //result := extractfilepath(paramstr(0));
 end; //AppDir
 {$ELSE}
-function AppDir: string; //e.g. c:\folder\ for c:\folder\myapp.exe, but /folder/myapp.app/ for /folder/myapp.app/app
+function AppDirVisible: string; //e.g. c:\folder\ for c:\folder\myapp.exe, but /folder/myapp.app/ for /folder/myapp.app/app
+begin
+ result := extractfilepath(paramstr(0));
+end; //AppDir
+
+function AppDirHidden: string; //e.g. c:\folder\ for c:\folder\myapp.exe, but /folder/myapp.app/ for /folder/myapp.app/app
 begin
  result := extractfilepath(paramstr(0));
 end; //AppDir
@@ -161,12 +222,12 @@ end; //AppDir
 function StartupIniName: string;
 begin
 
-     result := AppDir+'startup.ini'
+     result := AppDirHidden+'startup.ini'
 end; //StartupIniName
 
 function AppIniFilename: string;
 begin
-  result := AppDir+ 'cancel.inx'
+  result := AppDirHidden+ 'cancel.inx'
 end; //AppIniFilename
 
 function FilenameParts (lInName: string; var lPath,lName,lExt: string): boolean;
@@ -389,11 +450,11 @@ begin
        end;
      end;
      if (Wc = 0) then begin
-        result := 'Unable to Compute A: no whole items detected';
+        result := ' Unable to Compute A: no whole items detected';
         exit;
      end;
      if ((Rc+Lc) = 0) then begin
-        result := 'Unable to Compute A: no defective items detected';
+        result := ' Unable to Compute A: no defective items detected';
         exit;
      end;
      a := ((Le-Re)/Wc + (Rc-Lc)/(Rc+Lc))/2;
@@ -578,19 +639,125 @@ lA.MissedWholeEgoLeft := 0;
 lA.FoundWholeEgoRight := 0;
 lA.MissedWholeEgoRight   := 0; *)
 
+function  peseverateString(var lPrefs: TPrefs): string;
+begin
+  result := '0';
+  if lPrefs.Perseverate then
+    result := '1';
+end;
 
-function StatString (var lPrefs: TPRefs; lTextLabels: boolean; var lCalibratedMean: double): string;
+type
+  TStat = record
+    	nTotal, nMarked: integer;
+        maxX, minX, sumXTotal, sumXMarked: single;
+
+  end;
+
+procedure initStat(var Stat: TStat);
+begin
+    Stat.maxX := -maxint;
+    Stat.minX := maxint;
+    Stat.sumXTotal := 0;
+    Stat.nTotal := 0;
+    Stat.sumXMarked := 0;
+    Stat.nMarked := 0;
+end;
+
+procedure addStat(X: integer; marked: boolean; var Stat: TStat);
+begin
+    if X < Stat.minX then stat.minX := X;
+    if X > Stat.maxX then stat.maxX := X;
+    Stat.sumXTotal := Stat.sumXTotal + X;
+    Stat.nTotal := Stat.nTotal + 1;
+    if not marked then exit;
+    Stat.sumXMarked := Stat.sumXMarked + X;
+    Stat.nMarked := Stat.nMarked + 1;
+end;
+
+function simpleCoC(MinX, MaxX: single; var Stat: TStat): single;
+var
+   rangeX, x: single;
+begin
+  rangeX := maxX - minX;
+  x := Stat.sumXMarked - (Stat.nMarked * minX); //0...range
+  x := x /  (Stat.nMarked * rangeX);   //0..1
+  result := (x * 2) -1;
+end;
+
+function StatStr(Title: string; Stat: TStat; isCoc: boolean = false): string;
+var
+  rangeX, x, CoC: single;
+begin
+    result := '';
+    if Stat.nTotal < 1 then exit;
+
+    result := format('%s %d/%d ', [Title, Stat.nMarked, Stat.nTotal]);
+    if not isCoc then exit;
+    CoC := 0.0;
+    if (Stat.nMarked < 1) or (Stat.minX >= Stat.maxX) then exit;
+    rangeX := Stat.maxX - Stat.minX;
+    x := Stat.sumXMarked - (Stat.nMarked * Stat.minX); //0...range
+    x := x /  (Stat.nMarked * rangeX);   //0..1
+    CoC := (x * 2) -1;
+    //CoC := x / Stat.nMarked;
+    //CoC := x / (Stat.maxX-Stat.minX); //0..1
+    //CoC := (2 * CoC) - 1.0;
+    result := result + format('CoC %g ', [CoC]);
+end;
+
+
+function CopyA(L,R: TStat): string;
+var
+  A: single;
+begin
+    if ( R.nMarked + L.nMarked) < 1 then exit ('A = 0.0');
+    A := ((R.nMarked - L.nMarked))  / ( R.nMarked + L.nMarked);
+    result:=format(' A: %g ', [A]);
+
+end;
+
+function StatStringCopy (var lPrefs: TPrefs; lTextLabels: boolean; var lCalibratedMean: double): string;
+var
+   L,R,All: TStat;
+   i, x: integer;
+begin
+  if lPrefs.nCheck  < 1 then exit;
+  initStat(L);
+  initStat(R);
+  initStat(All);
+  for i := 1 to lPrefs.nCheck do begin
+    x := lPrefs.CheckPos[i].X;
+    addStat(x, lPrefs.CheckPos[i].Checked, All);
+    if lPrefs.CheckPos[i].targettype = kDefectLeftTargetType then
+       addStat(x, lPrefs.CheckPos[i].Checked, L);
+    if lPrefs.CheckPos[i].targettype = kDefectRightTargetType then
+       addStat(x, lPrefs.CheckPos[i].Checked, R);
+  end;
+  result := StatStr('All',All, true)+ StatStr('L',L)+StatStr('R',R)+CopyA(L,R);
+  if L.nTotal <> R.nTotal then
+     result := result + format(' not balanced %d L and %d R items', [L.nTotal, R.nTotal]);
+
+end;
+
+function StatString (var lPrefs: TPrefs; lTextLabels: boolean; var lCalibratedMean: double): string;
 const
      lDefectMode = false;
 var
   //Mode has three values -   kNormalAllType, kNormalTargetType, kAltTargetType
   //Mode of kNormalAllType returns CoC for all items, whereas kNormalTargetType and kAltTargetType return CoC values only for these items....
+  allStat: TStat;
   lChecked : boolean;
   nLeftFound,nLeftNotFound,nRightFound,nRightNotFound: integer;
   n, y,lnChecked,lMinY,lMaxY,lMinX,lMaxX,lRangeX,lRangeY ,i,x: integer;
+  peseverateTxt : string;
   lCalibratedMeanY, lSumCheckedCaly,lSumCalY,ycal,{lLateralityIndex,}xcal,lSumCal, lSumCheckedCal,lMeanPix,lSum,lSumChecked,lChiP: double;
 begin
   result := '';
+  peseverateTxt := peseverateString(lPrefs);
+  if lPrefs.CopyTask then begin
+     result :=  StatStringCopy (lPrefs, lTextLabels, lCalibratedMean);//+ kStatSep+peseverateTxt;
+     exit;
+  end;
   if lPrefs.nCheck < 1 then
     exit;
   nLeftFound := 0; nLeftNotFound := 0; nRightFound := 0; nRightNotFound := 0;
@@ -630,8 +797,13 @@ begin
   //lMidy := round((lRangeY/2)+lMinY);
   if (lRangeX = 0) or (lRangeY = 0) then
     exit;
+  initStat(allStat);
   //second pass - find values...
   for i := 1 to lPrefs.nCheck do begin
+    addStat(lPrefs.CheckPos[i].X, lPrefs.CheckPos[i].checked, allStat);
+
+    addStat(lPrefs.CheckPos[i].X, lPrefs.CheckPos[i].checkedDefectMode, allStat);
+
     if IncludeTarget (lPrefs.CheckPos[i].TargetType, lDefectMode) then begin
       x := lPrefs.CheckPos[i].X;
       //lPrefs.CheckPos[i].checked;
@@ -687,7 +859,13 @@ begin
   else
     result := floattostr( lMeanPix)+kStatSep+floattostr( lCalibratedMean)+kStatSep+floattostr(lnChecked)+kStatSep+floattostr(n)+kStatSep+floattostr( lCalibratedMeanY) + kStatSep+lPrefs.ImageName  + kStatSep+lPrefs.INIname
     +kStatSep+floattostr(nLeftFound)+kStatSep+floattostr(nLeftNotFound)+kStatSep+floattostr(nRightFound)+kStatSep+floattostr(nRightNotFound)+kStatSep+floattostr( lChiP )
-    +kStatSep+  ComputeA(lPrefs,lTextLabels);
+    +kStatSep+  ComputeA(lPrefs,lTextLabels)+kStatSep+peseverateTxt;
+  if AllStat.nMarked > 0 then begin
+    result := result +kStatSep+ 'CoC_All'+kStatSep+floattostr(simpleCoC(lMinX, lMaxX, allStat));
+
+  end;
+
+
 end; //StatString
 
 

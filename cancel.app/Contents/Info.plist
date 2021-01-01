@@ -9,7 +9,9 @@
   <key>CFBundleName</key>
   <string>cancel</string>
   <key>CFBundleIdentifier</key>
-  <string>com.company.cancel</string>
+  <string>com.mricro.cancel</string>
+  <key>CFBundleIconFile</key>
+  <string>cancel</string>
   <key>CFBundleInfoDictionaryVersion</key>
   <string>6.0</string>
   <key>CFBundlePackageType</key>
@@ -39,5 +41,7 @@
       </array>
     </dict>
   </array>
+  <key>NSHighResolutionCapable</key>
+  <true/>
 </dict>
 </plist>

@@ -1,17 +1,20 @@
 object Form1: TForm1
-  Left = 514
+  Left = 492
   Height = 476
-  Top = 126
+  Top = 261
   Width = 626
+  AllowDropFiles = True
   Caption = 'Form1'
   ClientHeight = 476
   ClientWidth = 626
   Menu = MainMenu1
   OnClose = FormClose
   OnCreate = FormCreate
+  OnDropFiles = FormDropFiles
   OnResize = FormResize
+  OnShow = FormShow
   Position = poScreenCenter
-  LCLVersion = '1.0.2.0'
+  LCLVersion = '2.1.0.0'
   WindowState = wsMaximized
   object Memo1: TMemo
     Left = 0
@@ -23,6 +26,7 @@ object Form1: TForm1
       'Memo1'
     )
     TabOrder = 0
+    Visible = False
   end
   object Panel1: TPanel
     Left = 0
@@ -47,11 +51,29 @@ object Form1: TForm1
     object DefectCheck: TCheckBox
       Left = 8
       Height = 18
-      Top = 8
-      Width = 137
+      Top = 40
+      Width = 127
       Caption = 'Mark Defects Task'
       OnChange = DefectCheckChange
       TabOrder = 0
+    end
+    object PerseverateCheck: TCheckBox
+      Left = 8
+      Height = 18
+      Top = 16
+      Width = 106
+      Caption = 'Perseverations'
+      OnChange = PerseverateCheckChange
+      TabOrder = 1
+    end
+    object TaskLabel: TLabel
+      Left = 8
+      Height = 16
+      Top = 64
+      Width = 60
+      Caption = 'TaskLabel'
+      ParentColor = False
+      Visible = False
     end
   end
   object ToolBar1: TToolBar
@@ -74,7 +96,7 @@ object Form1: TForm1
   object MainMenu1: TMainMenu
     left = 35
     top = 56
-    object File1: TMenuItem
+    object FileMenu: TMenuItem
       Caption = 'File'
       object Statistics1: TMenuItem
         Caption = 'Statistics'
@@ -92,6 +114,59 @@ object Form1: TForm1
         Caption = 'Exit'
         OnClick = Exit1Click
       end
+      object FileSepMenu: TMenuItem
+        Caption = '-'
+      end
+      object MRU1: TMenuItem
+        Caption = 'MRU1'
+        Visible = False
+        OnClick = MRUclick
+      end
+      object MRU2: TMenuItem
+        Caption = 'MRU2'
+        Visible = False
+        OnClick = MRUclick
+      end
+      object MRU3: TMenuItem
+        Caption = 'MRU3'
+        Visible = False
+        OnClick = MRUclick
+      end
+      object MRU4: TMenuItem
+        Caption = 'MRU4'
+        Visible = False
+        OnClick = MRUclick
+      end
+      object MRU5: TMenuItem
+        Caption = 'MRU5'
+        Visible = False
+        OnClick = MRUclick
+      end
+      object MRU6: TMenuItem
+        Caption = 'MRU6'
+        Visible = False
+        OnClick = MRUclick
+      end
+      object MRU7: TMenuItem
+        Caption = 'MRU7'
+        Visible = False
+        OnClick = MRUclick
+      end
+      object MRU8: TMenuItem
+        Caption = 'MRU8'
+        Visible = False
+        OnClick = MRUclick
+      end
+      object MRU9: TMenuItem
+        Caption = 'MRU9'
+        Visible = False
+        OnClick = MRUclick
+      end
+      object MRU10: TMenuItem
+        Caption = 'MRU10'
+        Visible = False
+        OnClick = MRUclick
+      end
     end
     object Edit1: TMenuItem
       Caption = 'Edit'
@@ -108,6 +183,16 @@ object Form1: TForm1
         Caption = 'Uncheck all'
         ShortCut = 16469
         OnClick = Uncheckall1Click
+      end
+      object CheckLeft1: TMenuItem
+        Caption = 'Check all left'
+        ShortCut = 16460
+        OnClick = CheckLeft1Click
+      end
+      object CheckRight1: TMenuItem
+        Caption = 'Check all right'
+        ShortCut = 16466
+        OnClick = CheckRight1Click
       end
       object Reversechecks1: TMenuItem
         Caption = 'Reverse checks'
@@ -166,7 +251,7 @@ object Form1: TForm1
   object OpenDialog1: TOpenDialog
     DefaultExt = '.*.ini'
     Filter = 'Ini file|*.ini'
-    left = 24
+    left = 120
     top = 120
   end
   object BmpOpenDialog: TOpenDialog
@@ -216,5 +301,9 @@ object Form1: TForm1
     )
     left = 328
     top = 24
+  end
+  object OpenDialog2: TOpenDialog
+    left = 93
+    top = 198
   end
 end

@@ -6,7 +6,7 @@ uses IniFiles,SysUtils,graphics,Dialogs,Classes;
 
 const
   kMaxCheck = 256;
-  kVersion ='29 June 2013 :: Chris Rorden :: www.mricro.com';
+  kVersion ='12 December 2018 :: Chris Rorden :: www.mricro.com';
   kNormalAllType = 0;
   kNormalTargetType = 1;
   kDefectLeftTargetType = 2;
@@ -19,10 +19,11 @@ type
   TAppPrefs = record
          CheckColor, UncheckColor: integer;
          EditableTargetPositions,CommentVisible: boolean;
+         ImageFolder, MRUFolder: string;
   end;
   TPrefs = record
          MaxX,MaxY,nCheck,Size: integer;
-         ImageVisible,CaptionVisible,MarkDefectMode: boolean;
+         ImageVisible,CaptionVisible,MarkDefectMode, Perseverate, CopyTask: boolean;
          Comment,ImageName,Version,INIname,INIpath: string;
         CheckPos : array [1..kMaxCheck] of TCheckPoint;
   end;
@@ -31,6 +32,9 @@ function AppIniFile(lRead: boolean; lFilename: string; var lPrefs: TAppPrefs): b
 function IniFile(lRead: boolean; lFilename: string; var lPrefs: TPrefs): boolean;
 procedure SetDefaultPrefs (var lPrefs: TPrefs);
 function Bool2Char (lBool: boolean): char;
+
+var
+   gAppPrefs: TAppPrefs;
 
 implementation
 
@@ -43,10 +47,12 @@ begin
   with lPrefs do begin
     ImageName := '';
     ININame := 'Unsaved';
-    INIpath := extractfiledir(AppDir);
+    INIpath := extractfiledir(AppDirVisible(gAppPrefs.ImageFolder));
     Comment := '';
     Version := kVersion;
     CaptionVisible := false;
+    Perseverate := false;
+    CopyTask := false;
     ImageVisible := false;
     MarkDefectMode := false;
     Size :=24;
@@ -218,6 +224,7 @@ begin
   if (lRead) and (not Fileexists(lFilename)) then
         exit;
   lIniFile := TIniFile.Create(lFilename);
+  try
   if lRead then
      lIncludesMultiModes := false //value only used for writing, ignored for reads
   else
@@ -231,6 +238,8 @@ begin
     lPrefs.ImageName := extractfilename(lPrefs.ImageName);
   IniStr(lread,lIniFile,'Comment',lPrefs.Comment);
   IniBool(lRead,lIniFile,'CaptionVisible',lPrefs.CaptionVisible);
+  IniBool(lRead,lIniFile,'Perseverate',lPrefs.Perseverate);
+  IniBool(lRead,lIniFile,'CopyTask',lPrefs.CopyTask);
   IniBool(lRead,lIniFile,'ImageVisible',lPrefs.ImageVisible);
   IniBool(lRead,lIniFile,'MarkDefectMode',lPrefs.MarkDefectMode);
   IniInt(lRead,lIniFile, 'MaxX',lPrefs.MaxX);
@@ -241,7 +250,11 @@ begin
   if lPrefs.nCheck > 0 then
     for lI := 1 to  lPrefs.nCheck do
       IniCheckPoint(lRead,lIniFile, 'Point'+inttostr(lI),lPrefs.CheckPos[lI],lIncludesMultiModes);
+
   lIniFile.Free;
+  except
+    Showmessage('Unable to read/write '+lFilename);
+  end;
 end;//IniFile
 
 procedure SetDefaultAppPrefs (var lPrefs: TAppPrefs);
@@ -249,12 +262,15 @@ var
   i: integer;
 begin
   with lPrefs do begin
-    CheckColor := $0F2F0F;//$80FF80; //$80FF80;
-    UnCheckColor := $DFD0D0;//$FF;
+    CheckColor := $00FF00;//$0F2F0F;//$80FF80; //$80FF80;
+    UnCheckColor := $0000FF;//$DFD0D0;//$FF;
     CommentVisible := false;
     //MarkDefectMode := false;
     EditableTargetPositions := false;
   end;
+  SetCurrentDir('/Users/rorden/Lazarus'); //666
+  lPrefs.ImageFolder:= AppDirVisible('');
+  lPrefs.MRUFolder := '';
 end;  //SetDefaultAppPrefs
 
 function AppIniFile(lRead: boolean; lFilename: string; var lPrefs: TAppPrefs): boolean;
@@ -263,6 +279,7 @@ var
   lI: integer;
 begin
   result := false;
+  //if not lRead then showmessage('>>>>'+lFilename);
   if lRead then
      SetDefaultAppPrefs(lPrefs);
   if (lRead) and (not Fileexists(lFilename)) then
@@ -271,7 +288,9 @@ begin
   IniInt(lRead,lIniFile, 'CheckedColor',lPrefs.CheckColor);
   IniInt(lRead,lIniFile, 'UncheckedColor',lPrefs.UncheckColor);
   IniBool(lRead,lIniFile,'CommentVisible',lPrefs.CommentVisible);
+  IniStr(lread,lIniFile,'ImageFolder',lPrefs.ImageFolder);
+
   lIniFile.Free;
 end; //AppIniFile
 
-end.
+end.
